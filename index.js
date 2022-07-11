@@ -26,7 +26,7 @@ mongoose.connect("mongodb+srv://micaiahcape22:micaiah05@urlshortener.afsxdo4.mon
 }) 
 
 let userSchema = new mongoose.Schema({
-  name: String,
+  username: String,
 })
 
 let exerciseSchema = new mongoose.Schema({
@@ -36,6 +36,8 @@ let exerciseSchema = new mongoose.Schema({
   date: String,
   rawDate: Number,
 })
+
+
 
 /*let logSchema = new mongoose.Schema({
   username: String,
@@ -50,8 +52,11 @@ let exerciseSchema = new mongoose.Schema({
 var User = mongoose.model("User", userSchema)
 var Exercise = mongoose.model("Exercise", exerciseSchema);
 
+
+
 app.post('/api/users', (req, res) => {
-  let x = new User({name: req.body.username})
+
+  let x = new User({username: req.body.username})
   x.save((err, data) => {
     if (err) return console.log('could not add to database');
     console.log(data);
@@ -62,7 +67,7 @@ app.post('/api/users', (req, res) => {
 app.post('/api/users/:_id/exercises', (req, res) => {
   User.findOne({_id: req.params._id}, (err, data) => {
     if(err) console.log(err);
-    var retrievedName = data.name;
+    var retrievedName = data.username;
     var d;
     if(req.body.date == ""){
       d = new Date()
@@ -70,7 +75,7 @@ app.post('/api/users/:_id/exercises', (req, res) => {
       d = new Date(req.body.date)
     }
     
-    let y = new Exercise({username: data.name, date: d.toDateString(), duration: req.body.duration, description: req.body.description, rawDate: d.getTime()})
+    let y = new Exercise({username: data.username, date: d.toDateString(), duration: req.body.duration, description: req.body.description, rawDate: d.getTime()})
     y.save((err, data) => {
       if (err) return console.log(err);
       console.log(data);
@@ -107,8 +112,8 @@ app.get('/api/users/:_id/logs', (req, res) => {
 
 
   User.findOne({_id: req.params._id}, (err, data) => {
-    let d = Exercise.find({username: data.name, rawDate:{$gte: initial, $lte: final}}).limit(req.query.limit).select({description: 1, date: 1, _id: 0, duration: 1}).exec((e, output) => {
-      res.json({username: data.name, count: output.length, _id: req.params._id, log: output});
+    let d = Exercise.find({username: data.username, rawDate:{$gte: initial, $lte: final}}).limit(req.query.limit).select({description: 1, date: 1, _id: 0, duration: 1}).exec((e, output) => {
+      res.json({username: data.username, count: output.length, _id: req.params._id, log: output});
     });
 
     
