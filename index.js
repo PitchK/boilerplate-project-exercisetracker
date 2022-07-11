@@ -55,7 +55,7 @@ app.post('/api/users', (req, res) => {
   x.save((err, data) => {
     if (err) return console.log('could not add to database');
     console.log(data);
-    res.json({name: req.body.username, _id: data._id})
+    res.json({username: req.body.username, _id: data._id})
   })
 })
 
